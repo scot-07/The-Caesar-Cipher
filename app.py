@@ -57,4 +57,13 @@ if st.button("Submit"):
     plain_text = caesar_cipher(message, -shift)
     st.success(f"**Decrypted Text:** {plain_text}")  # Use markdown formatting for bold text
 
-st.text('Created by Anurag.')
+st.markdown("""
+<style>
+  .title {
+    text-align: center;
+  }
+</style>
+
+<p class="title">Created by Anurag.</p>
+""", unsafe_allow_html=True)
+
