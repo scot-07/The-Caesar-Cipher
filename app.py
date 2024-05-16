@@ -14,14 +14,15 @@ def caesar_cipher(message, shift):
   """
   alphabet = 'abcdefghijklmnopqrstuvwxyz'
   new_text = ''
-  lowercase_message = message.lower()  # Convert to lowercase for case-insensitive handling
-  for char in lowercase_message:
-    if char.isalpha():
-      new_index = (alphabet.index(char) + shift) % 26
-      new_char = alphabet[new_index]
-      new_text += new_char.upper() if char.isupper() else new_char
-    else:
-      new_text += char
+  for char in message:
+      if char.isalpha():
+          new_index = (alphabet.index(char.lower()) + shift) % 26
+          new_char = alphabet[new_index]
+          # Preserve case using ternary operator
+          new_text += new_char.upper() if char.isupper() else new_char
+      else:
+          # Add the symbol directly without modification
+          new_text += char
   return new_text
 
 # Center the title and description with CSS
@@ -40,22 +41,20 @@ st.markdown("""
 with st.container():
   st.expander("Enter your message and choose an action:", expanded=True)  # Set default to open
   message = st.text_area("Message:", key="message_input")
-  # Validate message input (check for alphabets and spaces only)
-  if not all(char.isalpha() or char.isspace() for char in message):
-    st.error("Please enter a valid message (alphabets and spaces only).")
-    message = ""  # Clear the input if invalid
+  # Removed validation check for message input
 
-  action = st.radio("Action:", ("Encrypt", "Decrypt"), key="action", index=0)  # Set default action to "Encrypt"
-  shift = st.number_input("Shift value (1-25):", min_value=1, max_value=25, key="shift_value")
+action = st.radio("Action:", ("Encrypt", "Decrypt"), key="action", index=0) # Set default action to "Encrypt"
+
+shift = st.number_input("Shift value (1-25):", min_value=1, max_value=25, key="shift_value")
 
 # Submit button and results section
 if st.button("Submit"):
   if action == "Encrypt":
     cipher_text = caesar_cipher(message, shift)
-    st.success(f"**Encrypted Text:** {cipher_text}")  # Use markdown formatting for bold text
+    st.success(f"**Encrypted Text:** {cipher_text}") # Use markdown formatting for bold text
   else:
     plain_text = caesar_cipher(message, -shift)
-    st.success(f"**Decrypted Text:** {plain_text}")  # Use markdown formatting for bold text
+    st.success(f"**Decrypted Text:** {plain_text}") # Use markdown formatting for bold text
 
 st.markdown("""
 <style>
@@ -66,4 +65,3 @@ st.markdown("""
 
 <p class="title">Created by Anurag.</p>
 """, unsafe_allow_html=True)
-
